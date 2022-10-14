@@ -20,5 +20,12 @@ func CreateTodo(c *fiber.Ctx) error {
 	Todos = append(Todos, *todo)
 
 	return c.Status(fiber.StatusOK).JSON(Todos)
+}
 
+func GetAllTodos(c *fiber.Ctx) error {
+	if len(Todos) == 0 {
+		return c.Status(fiber.StatusOK).SendString("No todos found...")
+	} else {
+		return c.Status(fiber.StatusOK).JSON(Todos)
+	}
 }

@@ -27,7 +27,7 @@ func main() {
 	app := fiber.New()
 
 	// app.Get("/todo", getTodo)
-	// app.Get("/todos", getAllTodos)
+	app.Get("/todos", GetAllTodos)
 	app.Post("/todo", CreateTodo)
 
 	// run the app on port 8080
