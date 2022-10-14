@@ -1,11 +1,7 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
-
-	"strconv"
 )
 
 func CreateTodo(c *fiber.Ctx) error {
@@ -37,30 +33,38 @@ func GetAllTodos(c *fiber.Ctx) error {
 }
 
 func GetTodo(c *fiber.Ctx) error {
-	// it will contain the todo to return
-	todo := &Todo{}
-
 	// get the id from the url params
-	strId := c.Params("id")
-
-	// convert string to int
-	intId, err := strconv.Atoi(strId)
+	id, err := c.ParamsInt("id")
 
 	if err != nil {
 		return err
 	}
 
-	// get the todo with the given id
-	for _, t := range Todos {
-		// if IDS correspond, we append the current todo to the value of the pointer todo
-		if t.ID == intId {
-			*todo = t
-			return c.Status(fiber.StatusOK).JSON(todo)
+	t, err := GetTodoById(&id)
+
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).SendString(err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(t)
+
+}
+
+func ToggleTodo(c *fiber.Ctx) error {
+	// get the id from the url params
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).SendString(err.Error())
+	}
+
+	// update the Todos list
+	for i, t := range Todos {
+		if t.ID == id {
+			Todos[i].Done = !Todos[i].Done
 		}
 	}
 
-	errResponse := fmt.Sprintf("We don't found the todo with the ID %v", strId)
-
-	return c.Status(fiber.StatusNotFound).SendString(errResponse)
-
+	// return the updated todo
+	return c.Status(fiber.StatusOK).JSON(Todos)
 }
