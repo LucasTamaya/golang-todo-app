@@ -20,38 +20,15 @@ type Todo struct {
 	Body  string `json:"body"`
 }
 
-var todos = []Todo{}
-
-func createTodo(c *fiber.Ctx) error {
-	// create an empty Todo struct and get its pointer
-	todo := &Todo{}
-
-	// here we try to parse the Body from the req into the todo struct
-	// if there is an err
-	if err := c.BodyParser(todo); err != nil {
-		return err
-	}
-
-	// if no error
-	// we create an ID
-	todo.ID = len(todos) + 1
-
-	// we update the list of todos
-	todos = append(todos, *todo)
-
-	return c.Status(fiber.StatusOK).JSON(todos)
-
-}
+var Todos = []Todo{}
 
 func main() {
 	// init the app
 	app := fiber.New()
 
-	// declare an empty slice of Todo type
-	// todos := []Todo{}
-
-	// app.Get("/", getBase)
-	app.Post("/todo", createTodo)
+	// app.Get("/todo", getTodo)
+	// app.Get("/todos", getAllTodos)
+	app.Post("/todo", CreateTodo)
 
 	// run the app on port 8080
 	log.Fatal(app.Listen(":8080"))
