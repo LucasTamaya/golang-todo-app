@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -26,12 +25,18 @@ func main() {
 	// init the app
 	app := fiber.New()
 
-	// app.Get("/todo", getTodo)
+	// var data int
+
+	// if data != nil {
+	// 	fmt.Println("The data is not nil")
+	// } else {
+	// 	fmt.Println("The data is nil")
+	// }
+
 	app.Get("/todos", GetAllTodos)
+	app.Get("/todo/:id", GetTodo)
 	app.Post("/todo", CreateTodo)
 
 	// run the app on port 8080
 	log.Fatal(app.Listen(":8080"))
-
-	fmt.Println("App is running on port 8080")
 }
