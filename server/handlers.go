@@ -62,6 +62,7 @@ func ToggleTodo(c *fiber.Ctx) error {
 	for i, t := range Todos {
 		if t.ID == id {
 			Todos[i].Done = !Todos[i].Done
+			break
 		}
 	}
 
