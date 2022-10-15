@@ -14,6 +14,10 @@ func CreateTodo(c *fiber.Ctx) error {
 		return err
 	}
 
+	// if no error
+	// we create an ID
+	todo.ID = len(Todos) + 1
+
 	// we update the list of Todos
 	Todos = append(Todos, *todo)
 
@@ -30,7 +34,11 @@ func GetAllTodos(c *fiber.Ctx) error {
 
 func GetTodo(c *fiber.Ctx) error {
 	// get the id from the url params
-	id := c.Params("id")
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		return err
+	}
 
 	t, err := GetTodoById(&id)
 
@@ -44,16 +52,19 @@ func GetTodo(c *fiber.Ctx) error {
 
 func ToggleTodo(c *fiber.Ctx) error {
 	// get the id from the url params
-	id := c.Params("id")
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).SendString(err.Error())
+	}
 
 	// update the Todos list
 	for i, t := range Todos {
 		if t.ID == id {
 			Todos[i].Done = !Todos[i].Done
-			return c.Status(fiber.StatusOK).JSON(Todos)
 		}
 	}
 
-	// return an error message
-	return c.Status(fiber.StatusNotFound).SendString("We don't found the todo")
+	// return the updated todo
+	return c.Status(fiber.StatusOK).JSON(Todos)
 }
