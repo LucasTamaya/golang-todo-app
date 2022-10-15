@@ -4,7 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 
 import Helmet from "./components/common/Helmet";
 import ITodo from "./interfaces/todo";
-import fetchAddTodo from "./api/addTodo";
+import { createTodo } from "./api/todo";
+import useAllTodos from "./hooks/useAllTodos";
+import Todo from "./components/Todo";
 
 const App: React.FC = () => {
   const [todosList, setTodosList] = useState<ITodo[]>([]);
@@ -27,6 +29,10 @@ const App: React.FC = () => {
       done: false,
     };
 
+    // clear inputs
+    setTodoTitle("");
+    setTodoBody("");
+
     // update the front
     setTodosList((prev) => [...prev, newTodo]);
 
@@ -34,8 +40,12 @@ const App: React.FC = () => {
     mutate(newTodo);
   };
 
+  // get all todos
+  const { isLoading, isSuccess, isError, data: todos } = useAllTodos();
+
+  // create a new todo
   const { mutate } = useMutation((newTodo: ITodo) => {
-    return fetchAddTodo(newTodo);
+    return createTodo(newTodo);
   });
 
   return (
@@ -57,11 +67,13 @@ const App: React.FC = () => {
               id="todo"
               className="p-2 outline-none shadow-lg rounded"
               placeholder="Title"
+              value={todoTitle}
               onChange={(e) => setTodoTitle(e.target.value)}
             />
             <textarea
               className="p-2 outline-none h-48 shadow-lg rounded resize-none"
               placeholder="Body"
+              value={todoBody}
               onChange={(e) => setTodoBody(e.target.value)}
             />
             <button
@@ -72,8 +84,13 @@ const App: React.FC = () => {
             </button>
           </form>
 
-          {todosList &&
-            todosList.map((todo) => <p key={todo.id}>{todo.body}</p>)}
+          <ul className="flex flex-col gap-y-5">
+            {isSuccess &&
+              todos.length > 0 &&
+              todos.map(({ id, title, body, done }) => (
+                <Todo key={id} id={id} title={title} body={body} done={done} />
+              ))}
+          </ul>
         </div>
       </main>
     </>

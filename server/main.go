@@ -27,7 +27,7 @@ func main() {
 	// init the app
 	app := fiber.New()
 
-	// handler CORS error
+	// handle CORS error
 	app.Use(cors.New())
 
 	app.Get("/todos", GetAllTodos)

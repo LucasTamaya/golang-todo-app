@@ -3,22 +3,20 @@ import axios from "axios";
 import API_BASE_URL from "../constants/url";
 import ITodo from "../interfaces/todo";
 
-const fetchAddTodo = async (
-  //   id: string,
-  //   title: string,
-  //   body: string,
-  //   done: boolean
-  todo: ITodo
-): Promise<any> => {
+export const getAllTodos = async (): Promise<ITodo[]> => {
+  const { data } = await axios.get(`${API_BASE_URL}/todos`);
+
+  console.log(data);
+
+  return data;
+};
+
+export const createTodo = async (todo: ITodo): Promise<any> => {
   const { id, title, body, done } = todo;
 
   console.log(todo);
 
   const { data } = await axios.post(`${API_BASE_URL}/todo`, {
-    // id: todo?.id,
-    // title: todo?.title,
-    // body: todo?.body,
-    // done: todo?.done,
     id,
     title,
     body,
@@ -29,5 +27,3 @@ const fetchAddTodo = async (
 
   return data;
 };
-
-export default fetchAddTodo;
