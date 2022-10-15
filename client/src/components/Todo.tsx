@@ -4,7 +4,7 @@ import { useState } from "react";
 import ITodo from "../interfaces/todo";
 import checkIcon from "../assets/img/check_icon.svg";
 import uncheckIcon from "../assets/img/uncheck_icon.svg";
-import { toggleTodo } from "../api/todo";
+import { deleteTodo, toggleTodo } from "../api/todo";
 import Button from "./common/Button";
 
 const baseStyle =
@@ -25,7 +25,12 @@ const Todo: React.FC<Props> = ({
 }) => {
   const [showDetails, setShowDetails] = useState(false);
 
-  const updateTodo = () => {
+  // toggle todo status
+  const { mutate } = useMutation((id: string) => {
+    return toggleTodo(id);
+  });
+
+  const handleToggleTodo = () => {
     const updatedTodosList = todosList.map((todo) => {
       if (todo.id === id) {
         todo.done = !todo.done;
@@ -33,16 +38,17 @@ const Todo: React.FC<Props> = ({
       return todo;
     });
 
-    console.log(updatedTodosList);
-
     setTodosList(updatedTodosList);
     mutate(id);
   };
 
-  // toggle todo status
-  const { mutate } = useMutation((id: string) => {
-    return toggleTodo(id);
-  });
+  const handleDeleteTodo = () => {
+    const updatedTodosList = todosList.filter((todo) => todo.id !== id);
+
+    setTodosList(updatedTodosList);
+
+    deleteTodo(id);
+  };
 
   return (
     <>
@@ -64,15 +70,24 @@ const Todo: React.FC<Props> = ({
           className="absolute top-0 left-0 w-full h-screen flex flex-row justify-center items-center bg-black/10"
           onClick={() => setShowDetails(false)}
         >
-          <div className="w-full max-w-2xl flex flex-col bg-white rounded p-5">
-            <h2 className="text-2xl text-teal-400 font-bold mb-2">Title</h2>
+          <div className="w-full max-w-2xl flex flex-col gap-y-3 bg-white rounded p-5">
+            <h2 className="text-2xl text-teal-400 font-bold">Title</h2>
             <p className="mb-5">{title}</p>
-            <h2 className="text-2xl text-teal-400 font-bold mb-2">Body</h2>
+            <h2 className="text-2xl text-teal-400 font-bold">Body</h2>
             <p className="mb-5">{body}</p>
             <Button
               title={`${done ? "Not yet finished" : "Marked as finished"}`}
+              bgColor="bg-teal-400"
               onClick={() => {
-                updateTodo();
+                handleToggleTodo();
+                setShowDetails(false);
+              }}
+            />
+            <Button
+              title="Delete"
+              bgColor="bg-red-500"
+              onClick={() => {
+                handleDeleteTodo();
                 setShowDetails(false);
               }}
             />

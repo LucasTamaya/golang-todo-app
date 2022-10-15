@@ -22,9 +22,11 @@ func CreateTodo(c *fiber.Ctx) error {
 
 func GetAllTodos(c *fiber.Ctx) error {
 	if len(Todos) == 0 {
-		return c.Status(fiber.StatusNotFound).SendString("No todos found...")
-	} else {
 		return c.Status(fiber.StatusOK).JSON(Todos)
+	} else if len(Todos) > 0 {
+		return c.Status(fiber.StatusOK).JSON(Todos)
+	} else {
+		return c.Status(fiber.StatusNotFound).SendString("No todos found...")
 	}
 }
 
@@ -43,7 +45,6 @@ func GetTodo(c *fiber.Ctx) error {
 }
 
 func ToggleTodo(c *fiber.Ctx) error {
-	// get the id from the url params
 	id := c.Params("id")
 
 	// update the Todos list
@@ -57,5 +58,18 @@ func ToggleTodo(c *fiber.Ctx) error {
 
 	// return an error message
 	return c.Status(fiber.StatusNotFound).SendString("We don't found the todo")
+}
 
+func DeleteTodo(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	for i, t := range Todos {
+		if t.ID == id {
+			// delete the current todo
+			Todos = append(Todos[:i], Todos[i+1:]...)
+			return c.Status(fiber.StatusOK).JSON(Todos)
+		}
+	}
+
+	return c.Status(fiber.StatusNotFound).SendString("We don't found the todo")
 }

@@ -7,6 +7,7 @@ import ITodo from "./interfaces/todo";
 import { createTodo } from "./api/todo";
 import useAllTodos from "./hooks/useAllTodos";
 import Todo from "./components/Todo";
+import Button from "./components/common/Button";
 
 const App: React.FC = () => {
   const [todosList, setTodosList] = useState<ITodo[]>([]);
@@ -49,7 +50,8 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && todos.length > 0) {
+      console.log(typeof todos);
       setTodosList(todos);
     }
   }, [isSuccess, todos]);
@@ -82,12 +84,11 @@ const App: React.FC = () => {
               value={todoBody}
               onChange={(e) => setTodoBody(e.target.value)}
             />
-            <button
-              className="p-2 rounded bg-teal-400 text-white font-bold"
+            <Button
+              title="Add a todo"
+              bgColor="bg-teal-400"
               onClick={addTodo}
-            >
-              Add todo
-            </button>
+            />
           </form>
 
           {isLoading && <p>Loading ...</p>}

@@ -34,6 +34,7 @@ func main() {
 	app.Get("/todo/:id", GetTodo)
 	app.Post("/todo", CreateTodo)
 	app.Patch("/todo/:id", ToggleTodo)
+	app.Delete("/todo/:id", DeleteTodo)
 
 	// run the app on port 8080
 	log.Fatal(app.Listen(":8080"))

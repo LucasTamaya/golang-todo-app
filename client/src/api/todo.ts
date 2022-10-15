@@ -27,3 +27,9 @@ export const toggleTodo = async (id: string): Promise<ITodo[]> => {
 
   return data;
 };
+
+export const deleteTodo = async (id: string): Promise<ITodo[]> => {
+  const { data } = await axios.delete(`${API_BASE_URL}/todo/${id}`);
+
+  return data;
+};
