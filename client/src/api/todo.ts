@@ -6,15 +6,11 @@ import ITodo from "../interfaces/todo";
 export const getAllTodos = async (): Promise<ITodo[]> => {
   const { data } = await axios.get(`${API_BASE_URL}/todos`);
 
-  console.log(data);
-
   return data;
 };
 
-export const createTodo = async (todo: ITodo): Promise<any> => {
+export const createTodo = async (todo: ITodo): Promise<ITodo[]> => {
   const { id, title, body, done } = todo;
-
-  console.log(todo);
 
   const { data } = await axios.post(`${API_BASE_URL}/todo`, {
     id,
@@ -23,7 +19,11 @@ export const createTodo = async (todo: ITodo): Promise<any> => {
     done,
   });
 
-  console.log(data);
+  return data;
+};
+
+export const toggleTodo = async (id: string): Promise<ITodo[]> => {
+  const { data } = await axios.patch(`${API_BASE_URL}/todo/${id}`);
 
   return data;
 };

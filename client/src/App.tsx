@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useMutation } from "@tanstack/react-query";
 
@@ -48,6 +48,12 @@ const App: React.FC = () => {
     return createTodo(newTodo);
   });
 
+  useEffect(() => {
+    if (isSuccess) {
+      setTodosList(todos);
+    }
+  }, [isSuccess, todos]);
+
   return (
     <>
       <Helmet
@@ -84,11 +90,23 @@ const App: React.FC = () => {
             </button>
           </form>
 
+          {isLoading && <p>Loading ...</p>}
+
+          {isError && <p>An error happen</p>}
+
           <ul className="flex flex-col gap-y-5">
             {isSuccess &&
-              todos.length > 0 &&
-              todos.map(({ id, title, body, done }) => (
-                <Todo key={id} id={id} title={title} body={body} done={done} />
+              todosList.length > 0 &&
+              todosList.map(({ id, title, body, done }) => (
+                <Todo
+                  key={id}
+                  id={id}
+                  title={title}
+                  body={body}
+                  done={done}
+                  todosList={todosList}
+                  setTodosList={setTodosList}
+                />
               ))}
           </ul>
         </div>
