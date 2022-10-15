@@ -67,7 +67,7 @@ const App: React.FC = () => {
         </h1>
 
         <div className="max-w-2xl mx-auto">
-          <form className="flex flex-col gap-y-5  p-3 mt-10">
+          <form className="flex flex-col gap-y-5 p-3 mt-10">
             <input
               type="text"
               id="todo"
@@ -94,7 +94,7 @@ const App: React.FC = () => {
 
           {isError && <p>An error happen</p>}
 
-          <ul className="flex flex-col gap-y-5">
+          <ul className="flex flex-col gap-y-5 p-3">
             {isSuccess &&
               todosList.length > 0 &&
               todosList.map(({ id, title, body, done }) => (
