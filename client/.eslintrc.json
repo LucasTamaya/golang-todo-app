@@ -1,0 +1,9 @@
+{
+  "extends": ["react-app", "react-app/jest", "prettier"],
+  "rules": {
+    "eqeqeq": "error",
+    "semi": "warn",
+    "quotes": "warn",
+    "no-unused-vars": "warn"
+  }
+}
