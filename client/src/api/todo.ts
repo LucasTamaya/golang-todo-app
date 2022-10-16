@@ -4,7 +4,7 @@ import API_BASE_URL from "../constants/url";
 import ITodo from "../interfaces/todo";
 
 export const getAllTodos = async (): Promise<ITodo[]> => {
-  const { data } = await axios.get(`${API_BASE_URL}/todosfaegag`);
+  const { data } = await axios.get(`${API_BASE_URL}/todos`);
 
   return data;
 };

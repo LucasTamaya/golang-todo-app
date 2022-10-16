@@ -10,6 +10,7 @@ import TodoCard from "./components/todo/TodoCard";
 import Button from "./components/common/Button";
 import { AppContext } from "./context/AppContext";
 import Loader from "./components/common/Loader";
+import ErrorMessage from "./components/common/ErrorMessage";
 
 const App: React.FC = () => {
   const [todosList, setTodosList] = useState<ITodo[]>([]);
@@ -99,7 +100,9 @@ const App: React.FC = () => {
 
           {isLoading ? <Loader /> : null}
 
-          {isError ? <p>An error happen</p> : null}
+          {isError ? (
+            <ErrorMessage message="Oops, something went wrong on the server" />
+          ) : null}
 
           <ul className="flex flex-col gap-y-5 p-3">
             {todosList
