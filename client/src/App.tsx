@@ -6,13 +6,28 @@ import Helmet from "./components/common/Helmet";
 import ITodo from "./interfaces/todo";
 import { createTodo } from "./api/todo";
 import useAllTodos from "./hooks/useAllTodos";
-import Todo from "./components/Todo";
+import TodoCard from "./components/todo/TodoCard";
 import Button from "./components/common/Button";
+import { AppContext } from "./context/AppContext";
 
 const App: React.FC = () => {
   const [todosList, setTodosList] = useState<ITodo[]>([]);
   const [todoTitle, setTodoTitle] = useState("");
   const [todoBody, setTodoBody] = useState("");
+
+  // get all todos
+  const { isLoading, isSuccess, isError, data: todos } = useAllTodos();
+
+  // create a new todo
+  const { mutate } = useMutation((newTodo: ITodo) => {
+    return createTodo(newTodo);
+  });
+
+  useEffect(() => {
+    if (isSuccess && todos.length > 0) {
+      setTodosList(todos);
+    }
+  }, [isSuccess, todos]);
 
   const addTodo = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -37,27 +52,17 @@ const App: React.FC = () => {
     // update the front
     setTodosList((prev) => [...prev, newTodo]);
 
-    // update the back
+    // update on the server
     mutate(newTodo);
   };
 
-  // get all todos
-  const { isLoading, isSuccess, isError, data: todos } = useAllTodos();
-
-  // create a new todo
-  const { mutate } = useMutation((newTodo: ITodo) => {
-    return createTodo(newTodo);
-  });
-
-  useEffect(() => {
-    if (isSuccess && todos.length > 0) {
-      console.log(typeof todos);
-      setTodosList(todos);
-    }
-  }, [isSuccess, todos]);
-
   return (
-    <>
+    <AppContext.Provider
+      value={{
+        todosList,
+        setTodosList,
+      }}
+    >
       <Helmet
         content="Welcome to this simple todo app build with React JS and Golang!"
         title="Golang Todo App"
@@ -96,23 +101,21 @@ const App: React.FC = () => {
           {isError && <p>An error happen</p>}
 
           <ul className="flex flex-col gap-y-5 p-3">
-            {isSuccess &&
-              todosList.length > 0 &&
-              todosList.map(({ id, title, body, done }) => (
-                <Todo
-                  key={id}
-                  id={id}
-                  title={title}
-                  body={body}
-                  done={done}
-                  todosList={todosList}
-                  setTodosList={setTodosList}
-                />
-              ))}
+            {todosList
+              ? todosList.map(({ id, title, body, done }) => (
+                  <TodoCard
+                    key={id}
+                    id={id}
+                    title={title}
+                    body={body}
+                    done={done}
+                  />
+                ))
+              : null}
           </ul>
         </div>
       </main>
-    </>
+    </AppContext.Provider>
   );
 };
 
