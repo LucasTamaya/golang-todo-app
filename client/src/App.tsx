@@ -9,6 +9,7 @@ import useAllTodos from "./hooks/useAllTodos";
 import TodoCard from "./components/todo/TodoCard";
 import Button from "./components/common/Button";
 import { AppContext } from "./context/AppContext";
+import Loader from "./components/common/Loader";
 
 const App: React.FC = () => {
   const [todosList, setTodosList] = useState<ITodo[]>([]);
@@ -96,9 +97,9 @@ const App: React.FC = () => {
             />
           </form>
 
-          {isLoading && <p>Loading ...</p>}
+          {isLoading ? <Loader /> : null}
 
-          {isError && <p>An error happen</p>}
+          {isError ? <p>An error happen</p> : null}
 
           <ul className="flex flex-col gap-y-5 p-3">
             {todosList
