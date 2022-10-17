@@ -1,11 +1,12 @@
 {
-  "name": "react-js-starter-template",
+  "name": "golang-todo-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "dependencies": {

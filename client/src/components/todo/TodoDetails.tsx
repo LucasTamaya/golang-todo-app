@@ -21,8 +21,13 @@ const TodoDetails: React.FC<Props> = ({
   const { todosList, setTodosList } = useContext(AppContext) as AppContextType;
 
   // toggle todo status
-  const { mutate } = useMutation((id: string) => {
+  const { mutate: handleToggle } = useMutation((id: string) => {
     return toggleTodo(id);
+  });
+
+  // delete a todo
+  const { mutate: handleDelete } = useMutation((id: string) => {
+    return deleteTodo(id);
   });
 
   const handleToggleTodo = () => {
@@ -34,7 +39,7 @@ const TodoDetails: React.FC<Props> = ({
     });
 
     setTodosList(updatedTodosList);
-    mutate(id);
+    handleToggle(id);
     setShowDetails(false);
   };
 
@@ -42,7 +47,7 @@ const TodoDetails: React.FC<Props> = ({
     const updatedTodosList = todosList.filter((todo) => todo.id !== id);
 
     setTodosList(updatedTodosList);
-    deleteTodo(id);
+    handleDelete(id);
     setShowDetails(false);
   };
 
