@@ -8,7 +8,7 @@ import TodoDetails from "./TodoDetails";
 const baseStyle =
   "flex flex-row justify-between items-center border rounded cursor-pointer p-2";
 
-const Todo: React.FC<ITodo> = ({ title, body, done, id }) => {
+const TodoCard: React.FC<ITodo> = ({ title, body, done, id }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
@@ -39,4 +39,4 @@ const Todo: React.FC<ITodo> = ({ title, body, done, id }) => {
   );
 };
 
-export default Todo;
+export default TodoCard;
