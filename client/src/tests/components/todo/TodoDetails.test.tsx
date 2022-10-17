@@ -14,8 +14,8 @@ jest.mock("../../../api/todo", () => {
   return null;
 });
 
-const mockedTodosList: ITodo[] = [];
-const mockedSetTodosList = jest.fn();
+export const mockedTodosList: ITodo[] = [];
+export const mockedSetTodosList = jest.fn();
 const mockedSetShowDetails = jest.fn();
 
 const MockedComponent: React.FC<Props> = ({ mockedDoneState }) => {
