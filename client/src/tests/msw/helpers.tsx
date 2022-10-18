@@ -2,10 +2,11 @@ import { render } from "@testing-library/react";
 import { rest } from "msw";
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { mockedTodos } from "./mockedData";
 
 export const handlers = [
-  rest.get("*/markets*", (req, res, ctx) => {
-    return res(ctx.status(200));
+  rest.get("*/todos", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockedTodos));
   }),
 ];
 

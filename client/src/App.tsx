@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import Helmet from "./components/common/Helmet";
 import ITodo from "./interfaces/todo";
-import useAllTodos from "./hooks/useAllTodos";
 import TodoCard from "./components/todo/TodoCard";
 import { AppContext } from "./context/AppContext";
 import Loader from "./components/common/Loader";
 import ErrorMessage from "./components/common/ErrorMessage";
 import TodoForm from "./components/todo/TodoForm";
+import { getAllTodos } from "./api/todo";
 
 const App: React.FC = () => {
   const [todosList, setTodosList] = useState<ITodo[]>([]);
 
   // get all todos
-  const { isLoading, isSuccess, isError, data: todos } = useAllTodos();
+  const {
+    isLoading,
+    isSuccess,
+    isError,
+    data: todos,
+  } = useQuery(["todos"], getAllTodos);
 
   useEffect(() => {
     if (isSuccess && todos.length > 0) {

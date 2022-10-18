@@ -8,10 +8,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
-// func getBase(ctx *fiber.Ctx) error {
-// 	return ctx.Status(fiber.StatusOK).SendString("Welcome to my rest api")
-// }
-
 // struct are similar to object in JS
 type Todo struct {
 	// quotes will be used to send json response

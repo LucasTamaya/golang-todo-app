@@ -47,20 +47,31 @@ const TodoForm: React.FC = () => {
 
   return (
     <form className="flex flex-col gap-y-5 p-3 mt-10">
-      <input
-        type="text"
-        id="todo"
-        className="p-2 outline-none shadow-lg rounded"
-        placeholder="Title"
-        value={todoTitle}
-        onChange={(e) => setTodoTitle(e.target.value)}
-      />
-      <textarea
-        className="p-2 outline-none h-48 shadow-lg rounded resize-none"
-        placeholder="Body"
-        value={todoBody}
-        onChange={(e) => setTodoBody(e.target.value)}
-      />
+      <div className="flex flex-col gap-y-2">
+        <label htmlFor="todo" className="text-teal-400 font-bold">
+          Title
+        </label>
+        <input
+          type="text"
+          id="todo"
+          className="p-2 outline-none shadow-lg rounded"
+          placeholder="Title"
+          value={todoTitle}
+          onChange={(e) => setTodoTitle(e.target.value)}
+        />
+      </div>
+      <div className="flex flex-col gap-y-2">
+        <label htmlFor="body" className="text-teal-400 font-bold">
+          Body
+        </label>
+        <textarea
+          id="body"
+          className="p-2 outline-none h-48 shadow-lg rounded resize-none"
+          placeholder="Body"
+          value={todoBody}
+          onChange={(e) => setTodoBody(e.target.value)}
+        />
+      </div>
       <Button title="Add a todo" bgColor="bg-teal-400" onClick={addTodo} />
     </form>
   );
